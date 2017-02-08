@@ -209,14 +209,14 @@ class Clock_Sync_Follower(threading.Thread):
 
             server_socket.close()
 
-            times.sort(key=lambda (t0, t1, t2): t2-t0)
+            times.sort(key=lambda t0, t1, t2: t2-t0)
             times = times[:int(len(times)*0.69)]
             delays = [t2-t0 for t0, t1, t2 in times]
             offsets = [t0-((t1+(t2-t0)/2)) for t0, t1, t2 in times]
             mean_offset = sum(offsets)/len(offsets)
             offset_jitter = sum([abs(mean_offset-o)for o in offsets])/len(offsets)
             mean_delay = sum(delays)/len(delays)
-            delay_jitter = sum([abs(mean_delay-o)for o in delays])/len(delays)
+            # delay_jitter = sum([abs(mean_delay-o)for o in delays])/len(delays)
 
             # logger.debug('offset: %s (%s),delay %s(%s)'%(mean_offset/self.ms,offset_jitter/self.ms,mean_delay/self.ms,delay_jitter/self.ms))
             return mean_offset, offset_jitter
